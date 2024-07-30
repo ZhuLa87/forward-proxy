@@ -24,6 +24,11 @@ app.on("connection", async (clientToProxySocket) => {
 		return; // 結束處理
 	}
 
+	// 處理錯誤事件，避免未處理的錯誤導致應用程式崩潰
+	clientToProxySocket.on("error", (err) => {
+		console.error(`Error on connection from ${clientAddress}:`, err.message);
+	});
+
 	// 當接收到來自客戶端的第一筆資料時觸發
 	clientToProxySocket.once("data", async (data) => {
 		// 將接收到的資料轉換為 UTF-8 編碼的字串
